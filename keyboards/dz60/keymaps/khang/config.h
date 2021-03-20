@@ -1,0 +1,2 @@
+#undef RGBLIGHT_HUE_STEP
+#define RGBLIGHT_HUE_STEP 1 
