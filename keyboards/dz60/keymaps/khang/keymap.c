@@ -1,5 +1,12 @@
 #include QMK_KEYBOARD_H
 
+enum keyboard_layers {
+    _BL = 0,     // BaseLayer
+    _FL1,        // FunctionLayer1
+    _FL2,        // FunctionLayer2
+    _APPS,       // AppLaunchingLayer
+};
+
 enum custom_keycodes {
     THINGS = SAFE_RANGE,
     TERMINAL,
@@ -29,6 +36,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     delkey_registered = true;
                     // Reapplying modifier state so that the held control key(s)
                     // still work even after having tapped the Backspace/Delete key.
+                    set_mods(mod_state);
+                    return false;
+                } else if (mod_state & MOD_MASK_GUI) {
+                    del_mods(MOD_MASK_GUI);
+                    register_code16(A(KC_BSPC));
+                    delkey_registered = true;
                     set_mods(mod_state);
                     return false;
                 }
@@ -104,70 +117,52 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
 
-enum keyboard_layers {
-    _BL = 0,     // Base Layer
-    _FL,     // Function Layer
-    _APPS,   // App Launching Layer
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    /* _BaseLayer
-     * ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───────┐
-     * │ ` │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │ 0 │ - │ = │ bksp  │
-     * ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─────┤
-     * │tab  │ Q │ W │ E │ R │ T │ Y │ U │ I │ O │ P │ [ │ ] │ \|  │
-     * ├─────┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴─────┤
-     * │ Esc  │ A │ S │ D │ F │ G │ H │ J │ K │ L │ ; │ ' │ enter  │
-     * ├──────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────┬───┤
-     * │ shift  │ Z │ X │ C │ V │ B │ N │ M │ , │ . │ / │shift │del│
-     * ├────┬───┴┬──┴─┬─┴───┴───┴┬──┴─┬─┴───┴──┬┴───┼───┴┬────┬┴───┤
-     * │ctrl│opt │cmd │ space    │_FL │ space  │ ←  │ ↓  │ ↑  │ →  │
-     * └────┴────┴────┴──────────┴────┴────────┴────┴────┴────┴────┘
-    */
-    [_BL] = LAYOUT_60_ansi_split_space_rshift(
-// |         |         |         |         |         |         |         |         |         |         |         |         |         |
-    KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSLS,
+    [_BL] = LAYOUT_60_calbatr0ss(
+// |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
+    KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSLS,  KC_GRV,
     KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSPC,
     KC_ESC,   KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,
     KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,  MO(_APPS),
-    KC_LCTL,  KC_LALT,  KC_LGUI,            KC_SPC,             MO(_FL),            KC_SPC,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT),
+    KC_LCTL,  KC_LALT,  KC_LGUI,            MT(MOD_RGUI,KC_SPC),          MO(_FL1),           KC_SPC,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT),
 
-    /* _FunctionLayer
-     * ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───────┐
-     * │rst│   │   │   │   │   │   │   │   │   │   │   │   │       │
-     * ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─────┤
-     * │     │   │   │   │   │   │   │   │   │   │   │   │   │     │
-     * ├─────┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴─────┤
-     * │      │   │   │   │   │   │   │   │   │   │   │   │        │
-     * ├──────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────┬───┤
-     * │        │   │   │   │   │   │   │   │   │   │   │      │   │
-     * ├────┬───┴┬──┴─┬─┴───┴───┴┬──┴─┬─┴───┴──┬┴───┼───┴┬────┬┴───┤
-     * │    │    │    │          │    │        │↓vol│↑vol│prev│next│
-     * └────┴────┴────┴──────────┴────┴────────┴────┴────┴────┴────┘
-    */
-    [_FL] = LAYOUT_60_ansi_split_space_rshift(
+//  FunctionLayer1
+    [_FL1] = LAYOUT_60_calbatr0ss(
 //  KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
 //  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
 //  KC_ESC,   KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,
 //  KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,  MO(_APPS),
-//  KC_LCTL,  KC_LALT,  KC_LGUI,            KC_SPC,             MO(_FL),            KC_SPC,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT),
-// |         |         |         |         |         |         |         |         |         |         |         |         |         |
-    RESET,    RGB_M_P,  RGB_M_B,  RGB_M_R,  RGB_M_SW, RGB_M_SN, RGB_M_K,  RGB_M_X,  RGB_M_G,  RGB_M_T,  KC_NO,    KC_NO,    KC_NO,    KC_NO,
+//  KC_LCTL,  KC_LALT,  KC_LGUI,            LT(_FL2,KC_SPC),              MO(_FL1),           KC_SPC,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT),
+// |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
+    RESET,    RGB_M_P,  RGB_M_B,  RGB_M_R,  RGB_M_SW, RGB_M_SN, RGB_M_K,  RGB_M_X,  RGB_M_G,  RGB_M_T,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
     KC_NO,    RGB_TOG,  RGB_MOD,  RGB_RMOD, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    A(KC_BSPC),
     KC_NO,    RGB_HUI,  RGB_SAI,  RGB_VAI,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
     KC_NO,    RGB_HUD,  RGB_SAD,  RGB_VAD,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_MPLY,
     KC_NO,    KC_NO,    KC_NO,              KC_NO,              KC_NO,              KC_NO,    KC_VOLD,  KC_VOLU,  KC_MPRV,  KC_MNXT),
 
-    // _ApplicationLauncherLayer
-
-    [_APPS] = LAYOUT_60_ansi_split_space_rshift(
+//  FunctionLayer2
+    [_FL2] = LAYOUT_60_calbatr0ss(
 //  KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
 //  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
 //  KC_ESC,   KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,
 //  KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,  MO(_APPS),
-//  KC_LCTL,  KC_LALT,  KC_LGUI,            KC_SPC,             MO(_FL),            KC_SPC,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT),
-// |         |         |         |         |         |         |         |         |         |         |         |         |         |
-    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+//  KC_LCTL,  KC_LALT,  KC_LGUI,            LT(_FL2,KC_SPC),              MO(_FL1),           KC_SPC,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT),
+// |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
+    RESET,    RGB_M_P,  RGB_M_B,  RGB_M_R,  RGB_M_SW, RGB_M_SN, RGB_M_K,  RGB_M_X,  RGB_M_G,  RGB_M_T,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+    KC_NO,    RGB_TOG,  RGB_MOD,  RGB_RMOD, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    A(KC_BSPC),
+    KC_NO,    RGB_HUI,  RGB_SAI,  RGB_VAI,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+    KC_NO,    RGB_HUD,  RGB_SAD,  RGB_VAD,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_MPLY,
+    KC_NO,    KC_NO,    KC_NO,              KC_NO,              KC_NO,              KC_NO,    KC_VOLD,  KC_VOLU,  KC_MPRV,  KC_MNXT),
+
+//  AppLaunchingLayer
+    [_APPS] = LAYOUT_60_calbatr0ss(
+//  KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
+//  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
+//  KC_ESC,   KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,
+//  KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,  MO(_APPS),
+//  KC_LCTL,  KC_LALT,  KC_LGUI,            LT(_FL2,KC_SPC),              MO(_FL),            KC_SPC,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT),
+// |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
+    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
     KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    THINGS,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
     KC_NO,    KC_NO,    SPOTIFY,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
     KC_NO,    KC_NO,    KC_NO,    CALENDAR, TERMINAL, KC_NO,    NOTES,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
