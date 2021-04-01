@@ -3,8 +3,6 @@
 enum keyboard_layers {
     _BL = 0,     // BaseLayer
     _FL1,        // FunctionLayer1
-    _FL2,        // FunctionLayer2
-    _APPS,       // AppLaunchingLayer
 };
 
 enum custom_keycodes {
@@ -14,6 +12,7 @@ enum custom_keycodes {
     NOTES,  
     SPOTIFY,
 };
+
 // Initialize variable holding the binary
 // representation of active modifiers.
 uint8_t mod_state;
@@ -118,61 +117,43 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_BL] = LAYOUT_60_calbatr0ss(
+    [_BL] = LAYOUT_60_ansi_split_backspace(
 // |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
-    KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSLS,  KC_GRV,
+    KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSLS,  MO(_FL1),
     KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSPC,
     KC_ESC,   KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,
-    KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,  MO(_APPS),
-    KC_LCTL,  KC_LALT,  KC_LGUI,            MT(MOD_RGUI,KC_SPC),          MO(_FL1),           KC_SPC,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT),
+    KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,
+    KC_LCTL,  KC_LALT,  KC_LGUI,                                KC_SPC,                       KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT ),
 
 //  FunctionLayer1
-    [_FL1] = LAYOUT_60_calbatr0ss(
-//  KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
-//  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
-//  KC_ESC,   KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,
-//  KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,  MO(_APPS),
-//  KC_LCTL,  KC_LALT,  KC_LGUI,            LT(_FL2,KC_SPC),              MO(_FL1),           KC_SPC,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT),
+    [_FL1] = LAYOUT_60_ansi_split_backspace(
 // |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
     RESET,    RGB_M_P,  RGB_M_B,  RGB_M_R,  RGB_M_SW, RGB_M_SN, RGB_M_K,  RGB_M_X,  RGB_M_G,  RGB_M_T,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
     KC_NO,    RGB_TOG,  RGB_MOD,  RGB_RMOD, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    A(KC_BSPC),
     KC_NO,    RGB_HUI,  RGB_SAI,  RGB_VAI,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-    KC_NO,    RGB_HUD,  RGB_SAD,  RGB_VAD,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_MPLY,
-    KC_NO,    KC_NO,    KC_NO,              KC_NO,              KC_NO,              KC_NO,    KC_VOLD,  KC_VOLU,  KC_MPRV,  KC_MNXT),
-
-//  FunctionLayer2
-    [_FL2] = LAYOUT_60_calbatr0ss(
-//  KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
-//  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
-//  KC_ESC,   KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,
-//  KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,  MO(_APPS),
-//  KC_LCTL,  KC_LALT,  KC_LGUI,            LT(_FL2,KC_SPC),              MO(_FL1),           KC_SPC,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT),
-// |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
-    RESET,    RGB_M_P,  RGB_M_B,  RGB_M_R,  RGB_M_SW, RGB_M_SN, RGB_M_K,  RGB_M_X,  RGB_M_G,  RGB_M_T,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-    KC_NO,    RGB_TOG,  RGB_MOD,  RGB_RMOD, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    A(KC_BSPC),
-    KC_NO,    RGB_HUI,  RGB_SAI,  RGB_VAI,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-    KC_NO,    RGB_HUD,  RGB_SAD,  RGB_VAD,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_MPLY,
-    KC_NO,    KC_NO,    KC_NO,              KC_NO,              KC_NO,              KC_NO,    KC_VOLD,  KC_VOLU,  KC_MPRV,  KC_MNXT),
-
-//  AppLaunchingLayer
-    [_APPS] = LAYOUT_60_calbatr0ss(
-//  KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
-//  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
-//  KC_ESC,   KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,
-//  KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,  MO(_APPS),
-//  KC_LCTL,  KC_LALT,  KC_LGUI,            LT(_FL2,KC_SPC),              MO(_FL),            KC_SPC,   KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT),
-// |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
-    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    THINGS,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-    KC_NO,    KC_NO,    SPOTIFY,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-    KC_NO,    KC_NO,    KC_NO,    CALENDAR, TERMINAL, KC_NO,    NOTES,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-    KC_NO,    KC_NO,    KC_NO,              KC_NO,              KC_NO,              KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO),
+    KC_NO,    RGB_HUD,  RGB_SAD,  RGB_VAD,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+    KC_NO,    KC_NO,    KC_NO,                                  KC_NO,                        KC_VOLD,  KC_VOLU,  KC_MPRV,  KC_MNXT)
 };
 
 // sets the static color to a familiar yellow
 extern rgblight_config_t rgblight_config;
 void keyboard_post_init_user(void) {
-  rgblight_config.hue    = 34;
-  rgblight_config.sat    = 250;
-  rgblight_config.val    = 250;
+    rgblight_config.hue    = 34;
+    rgblight_config.sat    = 250;
+    rgblight_config.val    = 250;
+}
+
+uint32_t layer_state_set_user(uint32_t state) {
+    switch (biton32(state)) {
+        case _BL:
+            rgblight_config.hue = 34;
+            rgblight_config.sat = 250;
+            rgblight_config.val = 250;
+            rgblight_mode(32);
+            break;
+        case _FL1:
+            rgblight_sethsv_noeeprom(HSV_AZURE);
+        break;
+    }
+    return state;
 }
