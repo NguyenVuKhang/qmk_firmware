@@ -93,12 +93,14 @@ void keyboard_post_init_user(void) {
 uint32_t layer_state_set_user(uint32_t state) {
     switch (biton32(state)) {
         case _BL:
-            rgblight_config.hue = 34;
-            rgblight_config.sat = 250;
-            rgblight_config.val = 250;
-            rgblight_mode(32);
+            // rgblight_config.hue = 34;
+            // rgblight_config.sat = 250;
+            // rgblight_config.val = 250;
+            // rgblight_mode(32);
+            rgblight_disable();
             break;
         case _FL1:
+            rgblight_enable();
             rgblight_sethsv_noeeprom(HSV_AZURE);
         break;
     }
