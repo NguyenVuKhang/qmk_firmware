@@ -54,7 +54,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // Let QMK process the KC_BSPC keycode as usual outside of control
             return true;
         };
-
         break;
     }
     return true;
@@ -100,25 +99,34 @@ void keyboard_post_init_user(void) {
 
 // Turn on RGB underglow according to active layer
 uint32_t layer_state_set_user(uint32_t state) {
+    int red=249;
+    int blue=140;
+    int green=94;
+    int pink=252;
 	switch (biton32(state)) {
-		case _BL:
-            rgblight_sethsv_noeeprom(30, 250, 250); 
-            rgblight_mode(32);
+		case _BL: // base layer
+            rgblight_sethsv_range(0, 0, 0, 0, 16);
+            rgblight_sethsv_range(green, 200, 50, 9, 15);
+            rgblight_sethsv_range(green, 200, 80, 10, 14);
+            rgblight_sethsv_range(green, 200, 100, 11, 13);
+            // instagram-looking configureation
+            // rgblight_sethsv_noeeprom(30, 250, 250);
+            // rgblight_mode(32);
             break;
-		case _FL:
-            rgblight_mode(1);
-            rgblight_sethsv_noeeprom(120, 200, 255); 
-            rgblight_sethsv_range(0, 0, 200, 8, 16);
+		case _FL: // function layer
+            rgblight_sethsv_range(0, 0, 0, 0, 16);
+            rgblight_sethsv_range(blue, 255, 50, 9, 15);
+            rgblight_sethsv_range(blue, 255, 80, 10, 14);
+            rgblight_sethsv_range(blue, 255, 100, 11, 13);
             break;
-		case _SL:
-            rgblight_mode(1);
-            rgblight_sethsv_range(252, 250, 250, 0, 8);
-            rgblight_sethsv_range(0, 0, 255, 8, 16);
+		case _WL: // window management layer
+            rgblight_sethsv_range(0, 0, 0, 0, 16);
+            rgblight_sethsv_range(red, 255, 50, 9, 15);
+            rgblight_sethsv_range(red, 255, 80, 10, 14);
+            rgblight_sethsv_range(red, 255, 100, 11, 13);
             break;
-		case _WL:
-            rgblight_mode(1);
-            rgblight_sethsv_noeeprom(100, 255, 255); 
-            rgblight_sethsv_range(0, 0, 200, 8, 16);
+		case _SL: // system mode (mostly for bootloader)
+            rgblight_sethsv_range(pink, 250, 250, 0, 16);
             break;
 		default:
             rgblight_sethsv_noeeprom(0, 0, 0);
