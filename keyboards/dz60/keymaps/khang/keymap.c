@@ -108,7 +108,7 @@ uint32_t layer_state_set_user(uint32_t state) {
             rgblight_sethsv_range(0, 0, 0, 0, 16);
             rgblight_sethsv_range(green, 200, 50, 9, 15);
             rgblight_sethsv_range(green, 200, 80, 10, 14);
-            rgblight_sethsv_range(green, 200, 100, 11, 13);
+            rgblight_sethsv_range(green, 200, 90, 11, 13);
             // instagram-looking configureation
             // rgblight_sethsv_noeeprom(30, 250, 250);
             // rgblight_mode(32);
@@ -117,13 +117,13 @@ uint32_t layer_state_set_user(uint32_t state) {
             rgblight_sethsv_range(0, 0, 0, 0, 16);
             rgblight_sethsv_range(blue, 255, 50, 9, 15);
             rgblight_sethsv_range(blue, 255, 80, 10, 14);
-            rgblight_sethsv_range(blue, 255, 100, 11, 13);
+            rgblight_sethsv_range(blue, 255, 90, 11, 13);
             break;
 		case _WL: // window management layer
             rgblight_sethsv_range(0, 0, 0, 0, 16);
             rgblight_sethsv_range(red, 255, 50, 9, 15);
             rgblight_sethsv_range(red, 255, 80, 10, 14);
-            rgblight_sethsv_range(red, 255, 100, 11, 13);
+            rgblight_sethsv_range(red, 255, 90, 11, 13);
             break;
 		case _SL: // system mode (mostly for bootloader)
             rgblight_sethsv_range(pink, 250, 250, 0, 16);
