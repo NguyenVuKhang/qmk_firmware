@@ -6,33 +6,8 @@ enum keyboard_layers {
     _SL,         // SystemLayer
 };
 
-uint8_t mod_state;
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    mod_state = get_mods();
-    switch (keycode) {
-        case KC_BSPC: {
-            static bool delkey_registered;
-            if (record->event.pressed) {
-                if (mod_state & MOD_MASK_CTRL) {
-                    del_mods(MOD_MASK_CTRL);
-                    register_code(KC_DEL);
-                    delkey_registered = true;
-                    set_mods(mod_state);
-                    return false;
-                }
-            } else { // on release of KC_BSPC
-                if (delkey_registered) {
-                    unregister_code(KC_DEL);
-                    delkey_registered = false;
-                    return false;
-                }
-            }
-            return true;
-        };
-        break;
-    }
-    return true;
-};
+#include "colors.c"
+#include "extrakeys.c"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // BaseLayer
@@ -66,72 +41,3 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
 //  KC_NO,    KC_NO,    KC_NO,                                  KC_NO,                        KC_NO,    KC_NO,    KC_NO,    KC_NO),
 };
-
-// Turn on RGB underglow according to active layer
-// uint32_t layer_state_set_user(uint32_t state) {
-//     // int red=249;
-//     int blue=140;
-//     int 94=94;
-//     int pink=252;
-// 	switch (biton32(state)) {
-// 		case _BL: // base layer
-//             rgblight_sethsv_range(0, 0, 0, 0, 16);
-//             rgblight_sethsv_range(94, 200, 50, 9, 15);
-//             rgblight_sethsv_range(94, 200, 80, 10, 14);
-//             rgblight_sethsv_range(94, 200, 90, 11, 13);
-//             // instagram-looking configureation
-//             // rgblight_sethsv_noeeprom(30, 250, 250);
-//             // rgblight_mode(32);
-//             break;
-// 		case _FL: // function layer
-//             rgblight_sethsv_range(0, 0, 0, 0, 16);
-//             rgblight_sethsv_range(blue, 255, 50, 9, 15);
-//             rgblight_sethsv_range(blue, 255, 80, 10, 14);
-//             rgblight_sethsv_range(blue, 255, 90, 11, 13);
-//             break;
-// 		case _SL: // system mode
-//             rgblight_sethsv_range(pink, 250, 250, 0, 16);
-//             break;
-// 	}
-// 	return state;
-// };
-
-const rgblight_segment_t PROGMEM _BL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0 ,16, 0   ,0   ,0  },
-    { 9, 6, 94, 255, 50},
-    {10, 4, 94, 255, 80},
-    {11, 2, 94, 255, 90}
-);
-const rgblight_segment_t PROGMEM _FL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0 ,16, 0   ,0   ,0  },
-    { 9, 6, 140, 255, 50},
-    {10, 4, 140, 255, 80},
-    {11, 2, 140, 255, 90}
-);
-const rgblight_segment_t PROGMEM _SL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0 ,16, 252, 255, 255}
-);
-
-const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    _BL_rgblayer,
-    _FL_rgblayer,
-    _SL_rgblayer
-);
-
-void keyboard_post_init_user(void) {
-    rgblight_sethsv_range(0, 0, 0, 0, 16);
-    rgblight_sethsv_range(94, 200, 50, 9, 15);
-    rgblight_sethsv_range(94, 200, 80, 10, 14);
-    rgblight_sethsv_range(94, 200, 90, 11, 13);
-    rgblight_layers = my_rgb_layers;
-}
-layer_state_t default_layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(0, layer_state_cmp(state, _BL));
-    return state;
-}
-
-layer_state_t layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(1, layer_state_cmp(state, _FL));
-    rgblight_set_layer_state(2, layer_state_cmp(state, _SL));
-    return state;
-}
