@@ -4,7 +4,6 @@ enum keyboard_layers {
     _BL = 0,     // BaseLayer
     _FL,         // FunctionLayer
     _SL,         // SystemLayer
-    _WL          // WindowLayer
 };
 
 // Initialize variable holding the binary
@@ -65,32 +64,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSLS,  MO(_FL),
     KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSPC,
     KC_ESC,   KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,
-    KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  MO(_WL),
+    KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,
     KC_LCTL,  KC_LALT,  KC_LGUI,                                KC_SPC,                       KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT ),
 
     // FunctionLayer
     [_FL] = LAYOUT_60_ansi_split_backspace(
-    MO(_SL),  KC_NO,    KC_NO,    KC_NO,    MEH(KC_4),KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    MEH(KC_I),KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
-    KC_NO,    MEH(KC_LEFT),KC_NO,MEH(KC_GRV),KC_NO,MEH(KC_RGHT),KC_NO,    MEH(KC_K),KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_MPLY,  
+    MO(_SL),  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_F13,   KC_NO,
+    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_BRID,  KC_BRIU,  KC_NO,  
+    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
+    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
     KC_NO,    KC_NO,    KC_NO,                                  KC_NO,                        KC_VOLD,  KC_VOLU,  KC_MPRV,  KC_MNXT),
 
     // SystemLayer
     [_SL] = LAYOUT_60_ansi_split_backspace(
     KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
+    KC_NO,    SGUI(KC_WHOM),KC_NO, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
     KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
     KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
     KC_NO,    KC_NO,    KC_NO,                                  RESET,                        KC_NO,    KC_NO,    KC_NO,    KC_NO),
 
-    // WindowLayer
-    [_WL] = LAYOUT_60_ansi_split_backspace(
-    KC_NO,MEH(KC_1),MEH(KC_2),MEH(KC_3),MEH(KC_4),MEH(KC_5),MEH(KC_6),MEH(KC_7),MEH(KC_8),MEH(KC_9),MEH(KC_0),MEH(KC_MINS),MEH(KC_EQL),MEH(KC_BSLS),MEH(KC_F1),
-    KC_NO,    MEH(KC_Q),MEH(KC_W),MEH(KC_E),MEH(KC_R),MEH(KC_T),KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
-    KC_NO,    MEH(KC_LEFT),MEH(KC_S),MEH(KC_D),MEH(KC_F),MEH(KC_RGHT),MEH(KC_H),MEH(KC_J),MEH(KC_K),MEH(KC_L),KC_NO,    KC_NO,    KC_NO,  
-    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    MEH(KC_N),MEH(KC_M),KC_NO,    KC_NO,    KC_NO,    KC_NO,  
-    KC_NO,    KC_NO,    KC_NO,                                  KC_NO,                        KC_NO,    KC_NO,    KC_NO,    KC_NO)
+//  template layer
+//  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+//  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
+//  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
+//  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
+//  KC_NO,    KC_NO,    KC_NO,                                  KC_NO,                        KC_NO,    KC_NO,    KC_NO,    KC_NO),
 };
 
 void keyboard_post_init_user(void) {
@@ -99,7 +97,7 @@ void keyboard_post_init_user(void) {
 
 // Turn on RGB underglow according to active layer
 uint32_t layer_state_set_user(uint32_t state) {
-    int red=249;
+    // int red=249;
     int blue=140;
     int green=94;
     int pink=252;
@@ -119,12 +117,12 @@ uint32_t layer_state_set_user(uint32_t state) {
             rgblight_sethsv_range(blue, 255, 80, 10, 14);
             rgblight_sethsv_range(blue, 255, 90, 11, 13);
             break;
-		case _WL: // window management layer
-            rgblight_sethsv_range(0, 0, 0, 0, 16);
-            rgblight_sethsv_range(red, 255, 50, 9, 15);
-            rgblight_sethsv_range(red, 255, 80, 10, 14);
-            rgblight_sethsv_range(red, 255, 90, 11, 13);
-            break;
+    //  case _WL: // window management layer
+    //      rgblight_sethsv_range(0, 0, 0, 0, 16);
+    //      rgblight_sethsv_range(red, 255, 50, 9, 15);
+    //      rgblight_sethsv_range(red, 255, 80, 10, 14);
+    //      rgblight_sethsv_range(red, 255, 90, 11, 13);
+    //      break;
 		case _SL: // system mode (mostly for bootloader)
             rgblight_sethsv_range(pink, 250, 250, 0, 16);
             break;
