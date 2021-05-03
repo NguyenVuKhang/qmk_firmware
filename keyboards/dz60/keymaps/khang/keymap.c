@@ -6,51 +6,27 @@ enum keyboard_layers {
     _SL,         // SystemLayer
 };
 
-// Initialize variable holding the binary
-// representation of active modifiers.
 uint8_t mod_state;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // Store the current modifier state in the variable for later reference
     mod_state = get_mods();
     switch (keycode) {
         case KC_BSPC: {
-            // Initialize a boolean variable that keeps track
-            // of the delete key status: registered or not?
             static bool delkey_registered;
-            // static bool backslash_registered;
             if (record->event.pressed) {
-                // Detect the activation of either control keys
                 if (mod_state & MOD_MASK_CTRL) {
-                    // First temporarily canceling both controls so that
-                    // control isn't applied to the KC_DEL keycode
                     del_mods(MOD_MASK_CTRL);
                     register_code(KC_DEL);
-                    // Update the boolean variable to reflect the status of KC_DEL
                     delkey_registered = true;
-                    // Reapplying modifier state so that the held control key(s)
-                    // still work even after having tapped the Backspace/Delete key.
                     set_mods(mod_state);
                     return false;
-                // } else if (mod_state & MOD_MASK_SHIFT) {
-                //     del_mods(MOD_MASK_SHIFT);
-                //     register_code16(KC_BSLS);
-                //     backslash_registered = true;
-                //     set_mods(mod_state);
-                //     return false;
                 }
             } else { // on release of KC_BSPC
-                // In case KC_DEL is still being sent even after the release of KC_BSPC
                 if (delkey_registered) {
                     unregister_code(KC_DEL);
                     delkey_registered = false;
                     return false;
-                //} else if (backslash_registered) {
-                //    unregister_code(KC_BSLS);
-                //    backslash_registered = false;
-                //    return false;
                 }
             }
-            // Let QMK process the KC_BSPC keycode as usual outside of control
             return true;
         };
         break;
@@ -78,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // SystemLayer
     [_SL] = LAYOUT_60_ansi_split_backspace(
     KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-    KC_NO,    SGUI(KC_WHOM),KC_NO, KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
+    KC_NO,SGUI(KC_WHOM),KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
     KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
     KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
     KC_NO,    KC_NO,    KC_NO,                                  RESET,                        KC_NO,    KC_NO,    KC_NO,    KC_NO),
@@ -90,10 +66,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
 //  KC_NO,    KC_NO,    KC_NO,                                  KC_NO,                        KC_NO,    KC_NO,    KC_NO,    KC_NO),
 };
-
-void keyboard_post_init_user(void) {
-    layer_state_set_user(layer_state);
-}
 
 // Turn on RGB underglow according to active layer
 uint32_t layer_state_set_user(uint32_t state) {
@@ -117,17 +89,8 @@ uint32_t layer_state_set_user(uint32_t state) {
             rgblight_sethsv_range(blue, 255, 80, 10, 14);
             rgblight_sethsv_range(blue, 255, 90, 11, 13);
             break;
-    //  case _WL: // window management layer
-    //      rgblight_sethsv_range(0, 0, 0, 0, 16);
-    //      rgblight_sethsv_range(red, 255, 50, 9, 15);
-    //      rgblight_sethsv_range(red, 255, 80, 10, 14);
-    //      rgblight_sethsv_range(red, 255, 90, 11, 13);
-    //      break;
-		case _SL: // system mode (mostly for bootloader)
+		case _SL: // system mode
             rgblight_sethsv_range(pink, 250, 250, 0, 16);
-            break;
-		default:
-            rgblight_sethsv_noeeprom(0, 0, 0);
             break;
 	}
 	return state;
