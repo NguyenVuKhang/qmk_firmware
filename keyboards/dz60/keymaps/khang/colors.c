@@ -1,8 +1,8 @@
 const rgblight_segment_t PROGMEM _BL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0 ,16, 0   ,0   ,0  },
-    { 9, 6, 94, 255, 50},
-    {10, 4, 94, 255, 80},
-    {11, 2, 94, 255, 90}
+    { 9, 6, 99, 255, 50},
+    {10, 4, 99, 255, 80},
+    {11, 2, 99, 255, 90}
 );
 const rgblight_segment_t PROGMEM _FL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0 ,16, 0   ,0   ,0  },
