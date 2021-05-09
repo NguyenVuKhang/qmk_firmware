@@ -4,6 +4,7 @@ enum keyboard_layers {
     _BL = 0,     // BaseLayer
     _FL,         // FunctionLayer
     _SL,         // SystemLayer
+    _BF,         // BroForceLayer (game)
 };
 
 #include "colors.c"
@@ -31,8 +32,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
     KC_NO,SGUI(KC_WHOM),KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
     KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
-    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
+    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    TG(_BF),  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
     KC_NO,    KC_NO,    KC_NO,                                  RESET,                        KC_NO,    KC_NO,    KC_NO,    KC_NO),
+
+    // BroForceLayer
+    [_BF] = LAYOUT_60_ansi_split_backspace(
+    TG(_BF),  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_UP,    KC_NO,    KC_NO,    KC_NO,  
+    KC_ESC,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_J,     KC_NO,    KC_LEFT,  KC_DOWN,  KC_RGHT,  KC_ENT,  
+    KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,  
+    KC_NO,    KC_NO,    KC_NO,                                  KC_NO,                        KC_NO,    KC_NO,    KC_NO,    KC_NO),
 
 //  template layer
 //  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
