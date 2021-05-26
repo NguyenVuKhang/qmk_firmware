@@ -1,23 +1,28 @@
+const int yel = 18;
+const int gre = 99;
+const int red = 252;
+const int blu = 140;
+const int base_sat = 120;
 const rgblight_segment_t PROGMEM _BL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0 ,16, 0   ,0   ,0  },
-    { 9, 6, 19, 255, 50},
-    {10, 4, 19, 255, 80},
-    {11, 2, 19, 255, 90}
+    { 9, 6, yel, base_sat, 50},
+    {10, 4, yel, base_sat, 80},
+    {11, 2, yel, base_sat, 90}
 );
 const rgblight_segment_t PROGMEM _FL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0 ,16, 0   ,0   ,0  },
-    { 9, 6, 99, 255, 50},
-    {10, 4, 99, 255, 80},
-    {11, 2, 99, 255, 90}
+    { 9, 6, gre, 255, 50},
+    {10, 4, gre, 255, 80},
+    {11, 2, gre, 255, 90}
 );
 const rgblight_segment_t PROGMEM _SL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0 ,16, 252, 255, 255}
+    {0 ,16, red, 255, 255}
 );
 const rgblight_segment_t PROGMEM _BF_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0 ,16, 0   ,0   ,0  },
-    { 9, 6, 140, 255, 50},
-    {10, 4, 140, 255, 80},
-    {11, 2, 140, 255, 90}
+    { 9, 6, blu, 255, 50},
+    {10, 4, blu, 255, 80},
+    {11, 2, blu, 255, 90}
 );
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     _BL_rgblayer,
@@ -26,13 +31,17 @@ const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     _BF_rgblayer
 );
 void keyboard_post_init_user(void) {
+    // rgblight_mode(32);
+    // rgblight_sethsv(34, 250, 250);
     rgblight_sethsv_range(0, 0, 0, 0, 16);
-    rgblight_sethsv_range(19, 255, 50, 9, 15);
-    rgblight_sethsv_range(19, 255, 80, 10, 14);
-    rgblight_sethsv_range(19, 255, 90, 11, 13);
+    rgblight_sethsv_range(yel, base_sat, 50, 9, 15);
+    rgblight_sethsv_range(yel, base_sat, 80, 10, 14);
+    rgblight_sethsv_range(yel, base_sat, 90, 11, 13);
     rgblight_layers = my_rgb_layers;
 }
 layer_state_t default_layer_state_set_user(layer_state_t state) {
+    // rgblight_mode(32);
+    // rgblight_sethsv(34, 250, 250);
     rgblight_set_layer_state(0, layer_state_cmp(state, _BL));
     return state;
 }
@@ -43,13 +52,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
-
-
-
-
-
-
+// IG
 // rgblight_config.hue = 34;
 // rgblight_config.sat = 250;
 // rgblight_config.val = 250;
 // rgblight_mode(32);
+// rgblight_sethsv(34, 250, 250);
