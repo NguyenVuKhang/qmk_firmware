@@ -7,6 +7,7 @@ enum keyboard_layers {
     _BF,         // BroForceLayer (game)
 };
 
+#include "gradient.h"
 #include "colors.c"
 #include "extrakeys.c"
 

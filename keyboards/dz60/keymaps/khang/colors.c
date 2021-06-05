@@ -3,26 +3,18 @@ const int gre = 99;
 const int red = 252;
 const int blu = 140;
 const int base_sat = 120;
+
 const rgblight_segment_t PROGMEM _BL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0 ,16, 0   ,0   ,0  },
-    { 9, 6, yel, base_sat, 50},
-    {10, 4, yel, base_sat, 80},
-    {11, 2, yel, base_sat, 90}
+	  GRADIENT(30,-6,255,255)
 );
 const rgblight_segment_t PROGMEM _FL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0 ,16, 0   ,0   ,0  },
-    { 9, 6, gre, 255, 50},
-    {10, 4, gre, 255, 80},
-    {11, 2, gre, 255, 90}
+		GRADIENT(105,-1,255,255)
 );
 const rgblight_segment_t PROGMEM _SL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0 ,16, red, 255, 255}
+		GRADIENT(20,-2,255,255)
 );
 const rgblight_segment_t PROGMEM _BF_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0 ,16, 0   ,0   ,0  },
-    { 9, 6, blu, 255, 50},
-    {10, 4, blu, 255, 80},
-    {11, 2, blu, 255, 90}
+		GRADIENT(150,-3,255,255)
 );
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     _BL_rgblayer,
@@ -31,12 +23,7 @@ const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     _BF_rgblayer
 );
 void keyboard_post_init_user(void) {
-    // rgblight_mode(32);
-    // rgblight_sethsv(34, 250, 250);
-    rgblight_sethsv_range(0, 0, 0, 0, 16);
-    rgblight_sethsv_range(yel, base_sat, 50, 9, 15);
-    rgblight_sethsv_range(yel, base_sat, 80, 10, 14);
-    rgblight_sethsv_range(yel, base_sat, 90, 11, 13);
+		GRADIENTx(30,-6,255,255)
     rgblight_layers = my_rgb_layers;
 }
 layer_state_t default_layer_state_set_user(layer_state_t state) {
