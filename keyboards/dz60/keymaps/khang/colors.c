@@ -1,20 +1,20 @@
-const int yel = 18;
+const int yel = 33;
 const int gre = 99;
 const int red = 252;
 const int blu = 140;
 const int base_sat = 120;
 
 const rgblight_segment_t PROGMEM _BL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-	  GRADIENT(30,-6,255,255)
+	  MINIMAL_BASE(yel,200)
 );
 const rgblight_segment_t PROGMEM _FL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-		GRADIENT(105,-1,255,255)
+		MINIMAL(gre,255)
 );
 const rgblight_segment_t PROGMEM _SL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-		GRADIENT(20,-2,255,255)
+		MINIMAL(red,255)
 );
 const rgblight_segment_t PROGMEM _BF_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
-		GRADIENT(150,-3,255,255)
+		MINIMAL(blu,255)
 );
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     _BL_rgblayer,
@@ -23,7 +23,7 @@ const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     _BF_rgblayer
 );
 void keyboard_post_init_user(void) {
-		GRADIENTx(30,-6,255,255)
+		MINIMAL_BASEx(yel,200);
     rgblight_layers = my_rgb_layers;
 }
 layer_state_t default_layer_state_set_user(layer_state_t state) {
