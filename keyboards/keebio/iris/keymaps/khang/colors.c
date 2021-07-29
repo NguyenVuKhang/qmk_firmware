@@ -7,7 +7,7 @@ const int base_sat = 120;
 const rgblight_segment_t PROGMEM _BL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
 	  MINIMAL_BASE(yel,250)
 );
-const rgblight_segment_t PROGMEM _FL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
+const rgblight_segment_t PROGMEM _FN_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
 		MINIMAL(gre,255)
 );
 const rgblight_segment_t PROGMEM _SL_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
@@ -18,7 +18,7 @@ const rgblight_segment_t PROGMEM _BF_rgblayer[] = RGBLIGHT_LAYER_SEGMENTS(
 );
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     _BL_rgblayer,
-    _FL_rgblayer,
+    _FN_rgblayer,
     _SL_rgblayer,
     _BF_rgblayer
 );
@@ -33,7 +33,7 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
     return state;
 }
 layer_state_t layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(1, layer_state_cmp(state, _FL));
+    rgblight_set_layer_state(1, layer_state_cmp(state, _FN));
     rgblight_set_layer_state(2, layer_state_cmp(state, _SL));
     rgblight_set_layer_state(3, layer_state_cmp(state, _BF));
     return state;
