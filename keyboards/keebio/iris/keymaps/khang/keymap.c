@@ -3,6 +3,18 @@
 #define HYPRL HYPR(KC_L)
 #define HYPRQ HYPR(KC_Q)
 #define HYPRS HYPR(KC_S)
+
+#define HYPR1 HYPR(KC_1)
+#define HYPR2 HYPR(KC_2)
+#define HYPR3 HYPR(KC_3)
+#define HYPR4 HYPR(KC_4)
+#define HYPR5 HYPR(KC_5)
+#define HYPR6 HYPR(KC_6)
+#define HYPR7 HYPR(KC_7)
+#define HYPR8 HYPR(KC_8)
+#define HYPR9 HYPR(KC_9)
+#define HYPR0 HYPR(KC_0)
+
 #define KC_STAB LSFT(KC_TAB)
 #undef _______
 #define _______ KC_NO
@@ -65,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_SL] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
+     _______, HYPR1  , HYPR2  , HYPR3  , HYPR4  , HYPR5  ,                            HYPR6  , HYPR7  , HYPR8  , HYPR9  , HYPR0  , _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, HYPRQ,   _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
