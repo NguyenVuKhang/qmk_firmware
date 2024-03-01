@@ -1,0 +1,54 @@
+#!/bin/sh
+# vim:syntax=bash
+#
+# Not in use.
+
+USER=khang
+
+compile() {
+    set_keyboard $1
+    qmk compile -j 4 -km $USER -kb $KEYBOARD
+}
+
+flash() {
+    set_keyboard $1
+    qmk flash -km $USER -kb $KEYBOARD
+}
+
+lsp() {
+    set_keyboard $1
+    qmk generate-compilation-database -km $USER -kb $KEYBOARD
+    qmk compile -j 4 -km $USER -kb $KEYBOARD
+}
+
+set_keyboard() {
+    case $1 in
+    iris) KEYBOARD=keebio/iris/rev4 ;;
+    dz60) KEYBOARD=dz60 ;;
+    *)
+        echo "\
+Please specify a keyboard:
+    * dz60
+    * iris"
+        exit 1
+        ;;
+    esac
+}
+
+while [ $# -gt 0 ]; do
+    case $1 in
+    c | compile)
+        compile $2
+        shift 2
+        ;;
+    f | flash)
+        flash $2
+        shift 2
+        ;;
+    lsp)
+        lsp $2
+        shift 2
+        ;;
+    *) shift ;;
+    esac
+done
