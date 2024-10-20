@@ -31,7 +31,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   , KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_LBRC, KC_RBRC, KC_BSLS,
         KC_ESC , KC_A   , KC_S   , KC_D   , KC_F   , KC_G   , KC_H   , KC_J   , KC_K   , KC_L   , KC_SCLN, KC_QUOT,          KC_ENT ,
         KC_LSFT, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   , KC_N   , KC_M   , KC_COMM, KC_DOT , KC_SLSH, MO_FN  , _______,
-        KC_LCTL, KC_LALT, KC_LGUI,                   KC_SPC ,                            ZZ_LEFT, KC_DOWN, KC_UP  , KC_RIGHT
+        KC_LCTL, KC_LALT, KC_LGUI,                   KC_SPC ,                            KC_LEFT, KC_DOWN, KC_UP  , KC_RIGHT
     ),
 
     // https://docs.qmk.fm/#/keycodes
@@ -67,47 +67,65 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // clang-format on
 };
 
-#undef S
-#define ONE(i, hue, sat, lum) \
-    { i, 1, hue, sat, lum }
-#define I(i, h, s, v) ONE(i, h(i), s(i), v(i))
-#define ALL_16 I(0, H, S, L), I(1, H, S, L), I(2, H, S, L), I(3, H, S, L), I(4, H, S, L), I(5, H, S, L), I(6, H, S, L), I(7, H, S, L), I(8, H, S, L), I(9, H, S, L), I(10, H, S, L), I(11, H, S, L), I(12, H, S, L), I(13, H, S, L), I(14, H, S, L), I(15, H, S, L)
+#define ONE(i, hue, lum) {i, 1, hue, 255, lum}
 
-#define H(i) i < 8 ? (190 + i * 6) % 256 : 6 + ((i - 8) * 5 / 2)
-#define S(i) 255
-#define L(i) 180 + i / 2
-const rgblight_segment_t PROGMEM BASE_RGB[] = RGBLIGHT_LAYER_SEGMENTS(ALL_16);
-#undef H
-#undef S
-#undef L
+const rgblight_segment_t PROGMEM BASE_RGB[] =
+    RGBLIGHT_LAYER_SEGMENTS(ONE(0x0, 190, 180),
+                            ONE(0x1, 196, 180),
+                            ONE(0x2, 202, 181),
+                            ONE(0x3, 208, 181),
+                            ONE(0x4, 214, 182),
+                            ONE(0x5, 220, 182),
+                            ONE(0x6, 226, 183),
+                            ONE(0x7, 232, 183),
+                            ONE(0x8, 6, 184),
+                            ONE(0x9, 8, 184),
+                            ONE(0xA, 11, 185),
+                            ONE(0xB, 13, 185),
+                            ONE(0xC, 16, 186),
+                            ONE(0xD, 18, 186),
+                            ONE(0xE, 21, 187),
+                            ONE(0xF, 23, 187));
 
-#define H(i) (7 - i) % 256
-#define S(i) 255
-#define L(i) 180
-const rgblight_segment_t PROGMEM DANGER_RGB[] = RGBLIGHT_LAYER_SEGMENTS(ALL_16);
-#undef H
-#undef S
-#undef L
+const rgblight_segment_t PROGMEM DANGER_RGB[] =
+    RGBLIGHT_LAYER_SEGMENTS(ONE(0x0, 7, 180),
+                            ONE(0x1, 6, 180),
+                            ONE(0x2, 5, 180),
+                            ONE(0x3, 4, 180),
+                            ONE(0x4, 3, 180),
+                            ONE(0x5, 2, 180),
+                            ONE(0x6, 1, 180),
+                            ONE(0x7, 0, 180),
+                            ONE(0x8, 255, 180),
+                            ONE(0x9, 254, 180),
+                            ONE(0xA, 253, 180),
+                            ONE(0xB, 252, 180),
+                            ONE(0xC, 251, 180),
+                            ONE(0xD, 250, 180),
+                            ONE(0xE, 249, 180),
+                            ONE(0xF, 248, 180));
 
-const rgblight_segment_t *const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(BASE_RGB, DANGER_RGB);
-// tied to the order in `my_rgb_layers`
-enum myrgb_layers { RGB_BASE, RGB_DANGER };
+const rgblight_segment_t *const PROGMEM my_rgb_layers[] =
+    RGBLIGHT_LAYERS_LIST(BASE_RGB, DANGER_RGB);
 
 void keyboard_post_init_kb(void) {
     rgblight_layers = my_rgb_layers;
 }
 
 layer_state_t default_layer_state_set_kb(layer_state_t state) {
-    rgblight_set_layer_state(RGB_BASE, layer_state_cmp(state, BASE_L));
+    // 0 here is the index of `my_rgb_layers`.
+    rgblight_set_layer_state(0, layer_state_cmp(state, BASE_L));
     return state;
 }
 
 layer_state_t layer_state_set_kb(layer_state_t state) {
-    rgblight_set_layer_state(RGB_DANGER, layer_state_cmp(state, DANGER_L));
+    // 1 here is the index of `my_rgb_layers`.
+    rgblight_set_layer_state(1, layer_state_cmp(state, DANGER_L));
     return state;
 }
 
-const key_override_t delete_key_override = ko_make_basic(MOD_MASK_CTRL, KC_BSPC, KC_DEL);
+const key_override_t delete_key_override =
+    ko_make_basic(MOD_MASK_CTRL, KC_BSPC, KC_DEL);
 
 // This globally defines all key overrides to be used
 const key_override_t **key_overrides = (const key_override_t *[]){
@@ -116,9 +134,30 @@ const key_override_t **key_overrides = (const key_override_t *[]){
 };
 
 // These overrides save memory space.
-uint16_t keycode_config(uint16_t keycode) {
-    return keycode;
-}
-uint8_t mod_config(uint8_t mod) {
-    return mod;
+// clang-format off
+uint16_t keycode_config(uint16_t keycode) { return keycode; }
+uint8_t mod_config(uint8_t mod) { return mod; }
+// clang-format on
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!record->event.pressed) return true;
+
+    switch (keycode) {
+        case KC_LBRC:
+            if (is_key_pressed(KC_LEFT)) {
+                register_code(KC_RGUI);
+                tap_code(KC_LBRC);
+                unregister_code(KC_RGUI);
+                return false;
+            }
+        case KC_RBRC:
+            if (is_key_pressed(KC_LEFT)) {
+                register_code(KC_RGUI);
+                tap_code(KC_RBRC);
+                unregister_code(KC_RGUI);
+                return false;
+            }
+        default:
+            return true;
+    }
 }
